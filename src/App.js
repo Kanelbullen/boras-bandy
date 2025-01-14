@@ -101,15 +101,6 @@ function App() {
           <h2>Slumpa Team</h2>
           <div className="input-group">
             <label>
-              Antal lag:
-              <input
-                type="number"
-                value={numTeams}
-                onChange={(e) => setNumTeams(Number(e.target.value))}
-                min="1"
-              />
-            </label>
-            <label>
               Totalt antal spelare:
               <input
                 type="number"
@@ -118,7 +109,7 @@ function App() {
                 min="1"
               />
             </label>
-            <button onClick={handleSetNames}>Skapa namn</button>
+            <button onClick={handleSetNames}>Lägg till namn</button>
             <div className="name-inputs">
               {names.map((name, index) => (
                 <div key={index}>
@@ -132,6 +123,7 @@ function App() {
               ))}
             </div>
           </div>
+          <div className="input-group">
           <label>
             Antal spelare per lag:
             <input
@@ -141,6 +133,16 @@ function App() {
               min="1"
             />
           </label>
+          <label>
+              Antal lag:
+              <input
+                type="number"
+                value={numTeams}
+                onChange={(e) => setNumTeams(Number(e.target.value))}
+                min="1"
+              />
+          </label>
+          </div>
           <br />
           <label>
             Antal aktiviteter:
