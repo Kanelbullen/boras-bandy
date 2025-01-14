@@ -9,7 +9,6 @@ function App() {
   const [teams, setTeams] = useState([]);
   const [numTeams, setNumTeams] = useState(2);
   const [playersPerTeam, setPlayersPerTeam] = useState(4);
-  const [totalPlayers, setTotalPlayers] = useState(8);
   const [numActivities, setNumActivities] = useState(3);
   const [activities, setActivities] = useState([]);
   const [distributeAll, setDistributeAll] = useState(true);
@@ -75,20 +74,63 @@ function App() {
     setNames(updatedNames);
   };
 
+  const handleAddName = () => {
+    setNames([...names, ""]);
+  };
+
+  const handleRemoveName = (index) => {
+    const updatedNames = [...names];
+    updatedNames.splice(index, 1);
+    setNames(updatedNames);
+  };
+
   const handleActivityChange = (index, value) => {
     const updatedActivities = [...activities];
     updatedActivities[index] = value;
     setActivities(updatedActivities);
   };
 
-  const handleSetNames = () => {
-    const initialNames = Array(totalPlayers).fill("");
-    setNames(initialNames);
-  };
-
   const handleSetActivities = () => {
     const initialActivities = Array(numActivities).fill("");
     setActivities(initialActivities);
+  };
+
+  const handleImportNames = () => {
+    const importedNames = [
+      "Casper Wiss",
+      "Elias Fogelström",
+      "Hugo Suserud",
+      "Hugo Wintfjäll",
+      "Isak Reinholdsson",
+      "Lukas Dahlberg",
+      "Mahmoud Atrash",
+      "Mio Heden",
+      "Nathan Johansson",
+      "Nils Dalqvist",
+      "Nils Palokas Jansson",
+      "Noel Sjöland",
+      "Sigge Andersen",
+      "Sixten Fridén",
+      "Theo Bodén",
+      "Theodor Lindgren",
+      "Walter Ikatti",
+      "Vilgot Pettersson",
+      "Wilmer Krönström",
+      "Zack Lycken",
+      "Alfred Eriksson",
+      "Alvin Elander",
+      "Edin Topic",
+      "Gabriel Wahlin",
+      "Jesper Kelly",
+      "Khaled Almousa Alahmad",
+      "Leo Önnefält",
+      "Noel Schwartz",
+      "Olle Tillsten",
+      "Wilhelm Wilhelmsson",
+      "William Brinck",
+      "Wilmer Åsbogård"
+    ];
+    setNames(importedNames);
   };
 
   return (
@@ -101,39 +143,6 @@ function App() {
           <h2>Slumpa Team</h2>
           <div className="input-group">
             <label>
-              Totalt antal spelare:
-              <input
-                type="number"
-                value={totalPlayers}
-                onChange={(e) => setTotalPlayers(Number(e.target.value))}
-                min="1"
-              />
-            </label>
-            <button onClick={handleSetNames}>Lägg till namn</button>
-            <div className="name-inputs">
-              {names.map((name, index) => (
-                <div key={index}>
-                  <label>Spelare {index + 1}:</label>
-                  <input
-                    type="text"
-                    value={name}
-                    onChange={(e) => handleNameChange(index, e.target.value)}
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="input-group">
-          <label>
-            Antal spelare per lag:
-            <input
-              type="number"
-              value={playersPerTeam}
-              onChange={(e) => setPlayersPerTeam(Number(e.target.value))}
-              min="1"
-            />
-          </label>
-          <label>
               Antal lag:
               <input
                 type="number"
@@ -141,9 +150,32 @@ function App() {
                 onChange={(e) => setNumTeams(Number(e.target.value))}
                 min="1"
               />
-          </label>
+            </label>
+            <label>
+              Spelare per lag:
+              <input
+                type="number"
+                value={playersPerTeam}
+                onChange={(e) => setPlayersPerTeam(Number(e.target.value))}
+                min="1"
+              />
+            </label>
+            <button onClick={handleImportNames}>Importera namn</button>
+            <button onClick={handleAddName}>Lägg till spelare</button>
           </div>
-          <br />
+          <div className="name-inputs">
+            {names.map((name, index) => (
+              <div key={index} className="name-row">
+                <input
+                  type="text"
+                  value={name}
+                  placeholder='Namn'
+                  onChange={(e) => handleNameChange(index, e.target.value)}
+                />
+                <button onClick={() => handleRemoveName(index)}>Ta bort</button>
+              </div>
+            ))}
+          </div>
           <label>
             Antal aktiviteter:
             <input
@@ -166,16 +198,14 @@ function App() {
               </div>
             ))}
           </div>
-          <br />
-          <label>
-            Fördela alla aktiviteter:
+          <div className="checkbox-group">
             <input
               type="checkbox"
               checked={distributeAll}
               onChange={(e) => setDistributeAll(e.target.checked)}
             />
-          </label>
-          <br />
+            <label>Fördela alla aktiviteter</label>
+          </div>
           <button onClick={handleGenerateTeams}>Generera lag</button>
           <div className="teams">
             {teams.map((team, index) => (
